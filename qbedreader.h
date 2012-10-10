@@ -35,8 +35,8 @@ private slots:
     void on_SaveLinksButton_clicked();
     void ProcError(QProcess::ProcessError err);
     void on_LoadLinkButton_clicked();
-    void on_LinkList_itemActivated(QTreeWidgetItem *item, int column);
-    void ProcFinish(int,QProcess::ExitStatus);
+    void on_LinkList_itemActivated(QTreeWidgetItem *item);
+    void ProcFinish();
     void on_SaveContentButton_clicked();
     void on_FetchButton_clicked();
     void on_ReadContentButton_clicked();

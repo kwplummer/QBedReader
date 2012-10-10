@@ -208,6 +208,8 @@ bool QBedReader::ParseArticle(QIODevice *data)
                     while(!xml.atEnd()) //If we're there, we can skip through the rest of the text.
                         xml.readNext();
             }
+        default:
+            break;
         }
     }
     try //On other wikis sometimes the text isn't all there, so RemoveJunk throws. If we don't catch it, we crash.
@@ -273,7 +275,7 @@ void QBedReader::on_MainButton_clicked()
     {
         ui->RawContent->setText("Starting AutoReader");
         AutoReading = true;
-        ProcFinish(0,QProcess::NormalExit); //This is the point the loop returns to. For reuse it's best to go here manually
+        ProcFinish(); //This is the point the loop returns to. For reuse it's best to go here manually
     }
 }
 //Saves the links and Wiki used to a user specified file
@@ -340,7 +342,7 @@ void QBedReader::on_LoadLinkButton_clicked()
   Write the URL/Filename to the URL field
   Push the fetch button
   */
-void QBedReader::on_LinkList_itemActivated(QTreeWidgetItem *item, int column)
+void QBedReader::on_LinkList_itemActivated(QTreeWidgetItem *item)
 {
     ui->RawURLText->setText(item->text(1));//Write the URL/Filename to the URL field
     on_FetchButton_clicked(); //Push the fetch button
@@ -403,14 +405,14 @@ void QBedReader::on_FetchButton_clicked()
                     QTreeWidgetItem *itm = ui->LinkList->topLevelItem(rand() % ui->LinkList->topLevelItemCount());
                     if(!itm->text(0).toInt()) //If it's unread
                     {
-                        on_LinkList_itemActivated(itm,0); //Activate it
+                        on_LinkList_itemActivated(itm); //Activate it
                         break;
                     }
                 }
             }
             else //Else pick the first.
             {
-                on_LinkList_itemActivated(ui->LinkList->selectedItems().at(0),0);
+                on_LinkList_itemActivated(ui->LinkList->selectedItems().at(0));
                 ui->LinkList->selectedItems().at(0)->setSelected(false);
             }
         }
@@ -465,7 +467,7 @@ void QBedReader::on_ReadContentButton_clicked()
 }
 
 //When flite finishes (or manually), this is called
-void QBedReader::ProcFinish(int exitCode, QProcess::ExitStatus exitStatus)
+void QBedReader::ProcFinish()
 {
     ui->RawContent->setText("Looping AutoReader");
     if(AutoReading)
