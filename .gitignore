@@ -1,2 +1,9 @@
 *~
 *.[user]*
+*.slo
+*.lo
+*.o
+*.so
+*.lai
+*.la
+*.a
